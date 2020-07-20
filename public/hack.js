@@ -4,9 +4,9 @@ import Q from 'q';
 import {KibanaApiService} from "./kibana-api-service";
 import packageJson from '../package.json';
 import { timefilter } from 'ui/timefilter';
-import { DashboardStateManager } from 'plugins/kibana/dashboard/dashboard_state_manager';
-import { store } from 'plugins/kibana/store';
-import { updateFilters } from 'plugins/kibana/dashboard/actions/view';
+import { DashboardStateManager } from '../../../src/legacy/core_plugins/kibana/public/dashboard/np_ready/dashboard_state_manager.ts';
+//import { store } from 'plugins/kibana/store';
+import { updateFilters } from '../../../src/legacy/ui/public/vis/editors/default/controls/filters.tsx';
 
 let kibanaVersion = packageJson.kibana.version;
 
@@ -183,7 +183,7 @@ uiModules.get('app/dashboard').run(function ($rootScope, $http, $location, kbnUr
 
                 getIndexPatternIdByTitle(e.data.index).then((indexId)=> {
                 const dashboardFilters= getAppState().filters.push(KibanaApiService.handleTextFilter(e.data.text,indexId));
-                    store.dispatch(updateFilters(getAppState().filters));
+                    this._store.dispatch(updateFilters(getAppState().filters));
                 });
                
                 return;
@@ -192,7 +192,7 @@ uiModules.get('app/dashboard').run(function ($rootScope, $http, $location, kbnUr
 
                 const appState = getAppState();
                 appState.filters = [];
-                store.dispatch(updateFilters(appState.filters));
+                this._store.dispatch(updateFilters(appState.filters));
 
                 return;
 
